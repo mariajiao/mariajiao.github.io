@@ -21,6 +21,9 @@
             --bg-light: #f5f0e8;
             --border-light: #e8dcc0;
             --white: #ffffff;
+            --gradient-1: linear-gradient(135deg, #8FB8DE, #a8c5e8);
+            --gradient-2: linear-gradient(135deg, #C2847A, #d49788);
+            --gradient-3: linear-gradient(135deg, #280003, #4d0006);
         }
 
         body {
@@ -31,13 +34,72 @@
             overflow-x: hidden;
         }
 
+        /* Custom Cursor - Only show on desktop, simplified */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.2s ease;
+            mix-blend-mode: difference;
+            display: none;
+        }
+
+        /* Show custom cursor only on devices that support hover (desktop) */
+        @media (hover: hover) and (pointer: fine) {
+            body {
+                cursor: none;
+            }
+            
+            .cursor {
+                display: block;
+            }
+        }
+
+        .cursor.hover {
+            transform: scale(1.5);
+            background: rgba(194, 132, 122, 0.2);
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--accent-color);
+            animation: floatShape 20s infinite linear;
+        }
+
+        .floating-shape:nth-child(1) { width: 80px; height: 80px; top: 20%; left: 10%; animation-duration: 25s; }
+        .floating-shape:nth-child(2) { width: 120px; height: 120px; top: 70%; left: 80%; animation-duration: 30s; background: var(--secondary-color); }
+        .floating-shape:nth-child(3) { width: 60px; height: 60px; top: 40%; left: 70%; animation-duration: 20s; }
+        .floating-shape:nth-child(4) { width: 100px; height: 100px; top: 10%; left: 50%; animation-duration: 35s; background: var(--primary-color); }
+
+        @keyframes floatShape {
+            0% { transform: translateY(0px); opacity: 0.3; }
+            50% { transform: translateY(-20px); opacity: 0.6; }
+            100% { transform: translateY(0px); opacity: 0.3; }
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
         }
 
-        /* Header */
+        /* Enhanced Header */
         header {
             position: fixed;
             top: 0;
@@ -46,6 +108,12 @@
             backdrop-filter: blur(20px);
             z-index: 1000;
             border-bottom: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(250, 243, 221, 0.98);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         nav {
@@ -62,6 +130,23 @@
             font-weight: 600;
             color: var(--primary-color);
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(194, 132, 122, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .logo:hover::before {
+            left: 100%;
         }
 
         .nav-links {
@@ -74,18 +159,20 @@
             text-decoration: none;
             color: var(--text-light);
             font-weight: 400;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
             position: relative;
+            padding: 0.5rem 0;
         }
 
         .nav-links a:hover {
             color: var(--secondary-color);
+            transform: translateY(-2px);
         }
 
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: 0;
             left: 0;
             width: 0;
             height: 2px;
@@ -97,13 +184,42 @@
             width: 100%;
         }
 
-        /* Hero Section */
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-color);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        /* Enhanced Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
             padding-top: 80px;
             background: linear-gradient(135deg, var(--cream) 0%, var(--bg-light) 100%);
+            position: relative;
         }
 
         .hero-content {
@@ -111,6 +227,27 @@
             grid-template-columns: 1fr auto;
             gap: 4rem;
             align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Reduce particles for better performance */
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: particleFloat 20s infinite linear;
+            will-change: transform;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-100px); opacity: 0; }
         }
 
         .profile-section {
@@ -133,13 +270,34 @@
             font-size: 1rem;
             color: var(--text-light);
             margin-bottom: 1.5rem;
-            transition: transform 0.3s ease;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, var(--accent-color), var(--secondary-color), var(--accent-color));
+            animation: profileSpin 20s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes profileSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .profile-image:hover {
             transform: scale(1.05);
+            box-shadow: 0 25px 60px rgba(143, 184, 222, 0.4);
         }
 
+        /* Typing Animation */
         .hero-text h1 {
             font-size: 3.5rem;
             font-weight: 300;
@@ -147,9 +305,20 @@
             color: var(--primary-color);
         }
 
-        .hero-text .highlight {
+        .typing-container {
+            display: inline-block;
+        }
+
+        .typing-text {
             color: var(--secondary-color);
             font-weight: 500;
+            border-right: 3px solid var(--secondary-color);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { border-color: transparent; }
+            51%, 100% { border-color: var(--secondary-color); }
         }
 
         .hero-text p {
@@ -157,6 +326,19 @@
             color: var(--text-light);
             margin-bottom: 2rem;
             line-height: 1.7;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.5s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .hero-stats {
@@ -175,14 +357,32 @@
             font-weight: 500;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-1);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .hero-tag:hover::before {
+            left: 0;
         }
 
         .hero-tag:hover {
-            background: var(--accent-color);
             color: var(--white);
-            transform: translateY(-2px);
+            transform: translateY(-2px) scale(1.05);
         }
 
+        /* Interactive floating cards */
         .hero-visual {
             position: relative;
             height: 400px;
@@ -195,13 +395,20 @@
             padding: 1.5rem;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             animation: float 6s ease-in-out infinite;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .floating-card:hover {
+            transform: scale(1.1) !important;
+            z-index: 10;
         }
 
         .card-1 {
             top: 20px;
             right: 20px;
             animation-delay: 0s;
-            background: linear-gradient(135deg, var(--accent-color), #a8c5e8);
+            background: var(--gradient-1);
             color: var(--white);
         }
 
@@ -209,7 +416,7 @@
             top: 150px;
             left: 20px;
             animation-delay: 2s;
-            background: linear-gradient(135deg, var(--secondary-color), #d49788);
+            background: var(--gradient-2);
             color: var(--white);
         }
 
@@ -217,7 +424,7 @@
             bottom: 50px;
             right: 50px;
             animation-delay: 4s;
-            background: linear-gradient(135deg, var(--primary-color), #4d0006);
+            background: var(--gradient-3);
             color: var(--cream);
         }
 
@@ -240,12 +447,19 @@
             height: 8px;
             background: rgba(255, 255, 255, 0.7);
             border-radius: 50%;
+            animation: pulse 2s infinite;
         }
 
-        /* Projects Section */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* Enhanced Projects Section */
         .projects {
             padding: 6rem 0;
             background: var(--cream);
+            position: relative;
         }
 
         .section-title {
@@ -254,11 +468,24 @@
             font-weight: 300;
             margin-bottom: 4rem;
             color: var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--secondary-color);
+            border-radius: 2px;
         }
 
         .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 2rem;
         }
 
@@ -267,9 +494,14 @@
             border-radius: 20px;
             padding: 2rem;
             border: 1px solid var(--border-light);
-            transition: all 0.3s ease;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
             overflow: hidden;
+            cursor: pointer;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            align-items: start;
         }
 
         .project-card::before {
@@ -284,13 +516,28 @@
             transition: transform 0.3s ease;
         }
 
+        .project-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
         .project-card:hover::before {
             transform: scaleX(1);
         }
 
+        .project-card:hover::after {
+            left: 100%;
+        }
+
         .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            transform: translateY(-15px) rotateY(5deg);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
         }
 
         .project-header {
@@ -298,6 +545,14 @@
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 1rem;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .project-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
         .project-title {
@@ -305,6 +560,11 @@
             font-weight: 600;
             color: var(--primary-color);
             margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .project-card:hover .project-title {
+            color: var(--secondary-color);
         }
 
         .project-role {
@@ -319,6 +579,12 @@
             background: var(--bg-light);
             padding: 0.25rem 0.75rem;
             border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-duration {
+            background: var(--secondary-color);
+            color: var(--white);
         }
 
         .project-description {
@@ -341,14 +607,32 @@
             font-size: 0.8rem;
             font-weight: 500;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .tech-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--secondary-color);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .tech-tag:hover::before {
+            left: 0;
         }
 
         .tech-tag:hover {
-            background: var(--secondary-color);
-            transform: translateY(-1px);
+            transform: translateY(-2px) scale(1.05);
         }
 
-        /* Skills Section */
+        /* Skill Category Enhancement */
         .skills {
             padding: 6rem 0;
             background: var(--bg-light);
@@ -365,6 +649,30 @@
             padding: 2rem;
             border-radius: 20px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-category::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .skill-category:hover::before {
+            opacity: 0.05;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
         }
 
         .skill-category h3 {
@@ -382,6 +690,12 @@
             height: 12px;
             background: var(--secondary-color);
             border-radius: 50%;
+            animation: iconPulse 3s infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); box-shadow: 0 0 20px rgba(194, 132, 122, 0.5); }
         }
 
         .skill-list {
@@ -398,32 +712,72 @@
             font-size: 0.9rem;
             font-weight: 500;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .skill-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--secondary-color);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .skill-item:hover::before {
+            left: 0;
         }
 
         .skill-item:hover {
-            background: var(--secondary-color);
             color: var(--white);
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.05);
         }
 
-        /* Contact Section */
+        /* Contact Section Enhancement */
         .contact {
             padding: 6rem 0;
             background: var(--primary-color);
             color: var(--white);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            animation: contactBg 20s linear infinite;
+        }
+
+        @keyframes contactBg {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-100px) translateY(-100px); }
         }
 
         .contact h2 {
             font-size: 2.5rem;
             font-weight: 300;
             margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
         }
 
         .contact p {
             font-size: 1.1rem;
             margin-bottom: 2rem;
             opacity: 0.8;
+            position: relative;
+            z-index: 2;
         }
 
         .contact-info {
@@ -431,16 +785,51 @@
             justify-content: center;
             gap: 3rem;
             margin-top: 2rem;
+            position: relative;
+            z-index: 2;
         }
 
         .contact-item {
             text-decoration: none;
             color: var(--white);
-            transition: opacity 0.3s ease;
+            transition: all 0.3s ease;
+            padding: 1rem 2rem;
+            border: 2px solid transparent;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: left 0.3s ease;
+        }
+
+        .contact-item:hover::before {
+            left: 0;
         }
 
         .contact-item:hover {
-            opacity: 0.7;
+            border-color: var(--cream);
+            transform: translateY(-5px);
+        }
+
+        /* Scroll Progress Indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+            z-index: 9999;
+            transition: width 0.1s ease;
         }
 
         /* Responsive Design */
@@ -456,6 +845,22 @@
 
             .nav-links {
                 display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--cream);
+                flex-direction: column;
+                padding: 2rem;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
             }
 
             .hero-stats {
@@ -466,10 +871,54 @@
                 flex-direction: column;
                 gap: 1rem;
             }
+
+            .floating-card {
+                position: relative !important;
+                margin: 1rem 0;
+                animation: none !important;
+            }
+
+            .hero-visual {
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .project-card {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        /* Smooth reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+
+    <!-- Scroll Progress -->
+    <div class="scroll-progress"></div>
+
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+    </div>
+
     <header>
         <nav>
             <a href="#" class="logo">Maria Jiao</a>
@@ -479,23 +928,28 @@
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </nav>
     </header>
 
     <section class="hero" id="about">
+        <div class="particles"></div>
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <h1>Maria Jiao</h1>
+                    <h1>Maria <span class="typing-container"><span class="typing-text">Jiao</span></span></h1>
                     <p>Electrical & Computer Engineering student at Duke University, passionate about AI/ML, full-stack development, and innovative engineering solutions.</p>
                 </div>
 
                 <div class="profile-section">
                     <div class="profile-image">
-                        <img src="image/pic.jpg" alt="Maria Jiao" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        <img src="image/me.JPG" alt="Maria Jiao" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                     </div>
                     <div class="hero-stats">
-                        <span class="hero-tag">Duke University</span>
                         <span class="hero-tag">Electrical & Computer Engineering</span>
                         <span class="hero-tag">Computer Science</span>
                         <span class="hero-tag">AI/ML Certificate</span>
@@ -503,13 +957,37 @@
                 </div>
             </div>
         </div>
+        </div>
     </section>
 
     <section class="projects" id="projects">
         <div class="container">
-            <h2 class="section-title">Featured Projects</h2>
+            <h2 class="section-title reveal">Featured Projects</h2>
             <div class="projects-grid">
-                <div class="project-card">
+                <div class="project-card reveal">
+                    <div class="project-header">
+                        <div>
+                            <h3 class="project-title">Duke Electric Vehicles</h3>
+                            <p class="project-role">Communication Protocol Technical Lead (Electrical Team) | VP of Recruiting</p>
+                        </div>
+                        <span class="project-duration">Sep 2024 - Present</span>
+                    </div>
+                    <div class="project-info">
+                        <p class="project-description">
+                            Design and implement custom CAN bus module and supporting comms PCB to manage robust serial communication between distributed microcontrollers across vehicle, interfacing with sensors and subsystems for real-time telemetry and data analytics. Researched and selected low-power, efficient components to reduce energy consumption in peripheral systems.
+                        </p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">CAN Bus</span>
+                            <span class="tech-tag">PCB Design</span>
+                            <span class="tech-tag">Microcontrollers</span>
+                            <span class="tech-tag">Real-time Systems</span>
+                            <span class="tech-tag">Low-power Design</span>
+                            <span class="tech-tag">Shell Eco-marathon</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card reveal">
                     <div class="project-header">
                         <div>
                             <h3 class="project-title">Philanthropy Intelligence Platform</h3>
@@ -517,20 +995,22 @@
                         </div>
                         <span class="project-duration">May 2025 - Present</span>
                     </div>
-                    <p class="project-description">
-                        Developed a full-stack web platform for Duke's alumni office, featuring AI-powered donor matching using embedding-based fuzzy-matching algorithms. Automated processing of 300+ donor records with 80% reduction in manual research time.
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">Flask</span>
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">MongoDB</span>
-                        <span class="tech-tag">Neo4j</span>
-                        <span class="tech-tag">OpenAI API</span>
-                        <span class="tech-tag">Selenium</span>
+                    <div class="project-info">
+                        <p class="project-description">
+                            Developed a full-stack web platform for Duke's alumni office, featuring AI-powered donor matching using embedding-based fuzzy-matching algorithms. Automated processing of 300+ donor records with 80% reduction in manual research time.
+                        </p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Flask</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">MongoDB</span>
+                            <span class="tech-tag">Neo4j</span>
+                            <span class="tech-tag">OpenAI API</span>
+                            <span class="tech-tag">Selenium</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="project-card">
+                <div class="project-card reveal">
                     <div class="project-header">
                         <div>
                             <h3 class="project-title">Duke Lightning Imager Platform</h3>
@@ -538,19 +1018,21 @@
                         </div>
                         <span class="project-duration">March 2025 - Present</span>
                     </div>
-                    <p class="project-description">
-                        Built Python-based platform supporting automated testing and real-time spectrometer data visualization. Developed CLI/GUI monitoring tools and computational models using Ray Matrix Theory for optical system simulation.
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Linux</span>
-                        <span class="tech-tag">Ray Matrix Theory</span>
-                        <span class="tech-tag">Data Visualization</span>
-                        <span class="tech-tag">Real-time Systems</span>
+                    <div class="project-info">
+                        <p class="project-description">
+                            Built Python-based platform supporting automated testing and real-time spectrometer data visualization. Developed CLI/GUI monitoring tools and computational models using Ray Matrix Theory for optical system simulation.
+                        </p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Linux</span>
+                            <span class="tech-tag">Ray Matrix Theory</span>
+                            <span class="tech-tag">Data Visualization</span>
+                            <span class="tech-tag">Real-time Systems</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="project-card">
+                <div class="project-card reveal">
                     <div class="project-header">
                         <div>
                             <h3 class="project-title">Automated Duke Flag Device</h3>
@@ -558,19 +1040,21 @@
                         </div>
                         <span class="project-duration">Sep 2024 - April 2025</span>
                     </div>
-                    <p class="project-description">
-                        Created WiFi-enabled IoT flag control system using ESP32 with MQTT protocol. Designed weatherproof electromechanical assembly reducing manual operation by 75%. Won People's Choice Award at Pratt Engineering Design Expo.
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">ESP32</span>
-                        <span class="tech-tag">IoT</span>
-                        <span class="tech-tag">MQTT</span>
-                        <span class="tech-tag">WiFi</span>
-                        <span class="tech-tag">Mechanical Design</span>
+                    <div class="project-info">
+                        <p class="project-description">
+                            Created WiFi-enabled IoT flag control system using ESP32 with MQTT protocol. Designed weatherproof electromechanical assembly reducing manual operation by 75%. Won People's Choice Award at Pratt Engineering Design Expo.
+                        </p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">ESP32</span>
+                            <span class="tech-tag">IoT</span>
+                            <span class="tech-tag">MQTT</span>
+                            <span class="tech-tag">WiFi</span>
+                            <span class="tech-tag">Mechanical Design</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="project-card">
+                <div class="project-card reveal">
                     <div class="project-header">
                         <div>
                             <h3 class="project-title">Simply Sorted Mobile App</h3>
@@ -578,15 +1062,17 @@
                         </div>
                         <span class="project-duration">May 2023 - Feb 2024</span>
                     </div>
-                    <p class="project-description">
-                        Developed iOS mobile app available on Apple Store promoting organized wardrobes and sustainable fashion. Integrated Google Cloud Firestore with Swift and implemented Firebase Authentication for secure user management.
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">Swift</span>
-                        <span class="tech-tag">iOS</span>
-                        <span class="tech-tag">Firebase</span>
-                        <span class="tech-tag">Google Cloud</span>
-                        <span class="tech-tag">Mobile Development</span>
+                    <div class="project-info">
+                        <p class="project-description">
+                            Developed iOS mobile app available on Apple Store promoting organized wardrobes and sustainable fashion. Integrated Google Cloud Firestore with Swift and implemented Firebase Authentication for secure user management.
+                        </p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Swift</span>
+                            <span class="tech-tag">iOS</span>
+                            <span class="tech-tag">Firebase</span>
+                            <span class="tech-tag">Google Cloud</span>
+                            <span class="tech-tag">Mobile Development</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -595,9 +1081,9 @@
 
     <section class="skills" id="skills">
         <div class="container">
-            <h2 class="section-title">Technical Skills</h2>
+            <h2 class="section-title reveal">Technical Skills</h2>
             <div class="skills-container">
-                <div class="skill-category">
+                <div class="skill-category reveal">
                     <h3><div class="category-icon"></div>Programming Languages</h3>
                     <div class="skill-list">
                         <span class="skill-item">Python</span>
@@ -611,7 +1097,7 @@
                     </div>
                 </div>
 
-                <div class="skill-category">
+                <div class="skill-category reveal">
                     <h3><div class="category-icon"></div>Development Tools</h3>
                     <div class="skill-list">
                         <span class="skill-item">Git</span>
@@ -625,7 +1111,7 @@
                     </div>
                 </div>
 
-                <div class="skill-category">
+                <div class="skill-category reveal">
                     <h3><div class="category-icon"></div>Engineering & Design</h3>
                     <div class="skill-list">
                         <span class="skill-item">Altium Designer</span>
@@ -638,7 +1124,7 @@
                     </div>
                 </div>
 
-                <div class="skill-category">
+                <div class="skill-category reveal">
                     <h3><div class="category-icon"></div>Creative & Communication</h3>
                     <div class="skill-list">
                         <span class="skill-item">Figma</span>
@@ -655,17 +1141,42 @@
 
     <section class="contact" id="contact">
         <div class="container">
-            <h2>Let's Connect</h2>
-            <p>Interested in collaborating or learning more about my work? I'd love to hear from you.</p>
+            <h2 class="reveal">Let's Connect</h2>
+            <p class="reveal">Interested in collaborating or learning more about my work? I'd love to hear from you.</p>
             <div class="contact-info">
-                <a href="mailto:maria.jiao@duke.edu" class="contact-item">maria.jiao@duke.edu</a>
-                <a href="https://www.linkedin.com/in/maria-jiao/" class="contact-item">LinkedIn</a>
-                <a href="tel:1-631-327-5176" class="contact-item">(631) 327-5176</a>
+                <a href="mailto:maria.jiao@duke.edu" class="contact-item reveal">maria.jiao@duke.edu</a>
+                <a href="https://www.linkedin.com/in/maria-jiao/" class="contact-item reveal">LinkedIn</a>
+                <a href="tel:1-631-327-5176" class="contact-item reveal">(631) 327-5176</a>
             </div>
         </div>
     </section>
 
     <script>
+        // Custom Cursor (optimized)
+        const cursor = document.querySelector('.cursor');
+        
+        if (cursor) {
+            let isMoving = false;
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isMoving) {
+                    isMoving = true;
+                    requestAnimationFrame(() => {
+                        cursor.style.left = e.clientX + 'px';
+                        cursor.style.top = e.clientY + 'px';
+                        isMoving = false;
+                    });
+                }
+            });
+        }
+
+        // Cursor hover effects
+        const hoverElements = document.querySelectorAll('a, button, .project-card, .skill-item, .hero-tag');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -680,17 +1191,98 @@
             });
         });
 
-        // Add scroll effect to header
-        window.addEventListener('scroll', () => {
+        // Mobile menu
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Optimized scroll effects
+        let scrollTicking = false;
+        
+        function updateOnScroll() {
             const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(250, 243, 221, 0.98)';
+            const scrollProgress = document.querySelector('.scroll-progress');
+            const scrolled = window.scrollY;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            
+            if (scrolled > 100) {
+                header.classList.add('scrolled');
             } else {
-                header.style.background = 'rgba(250, 243, 221, 0.95)';
+                header.classList.remove('scrolled');
+            }
+
+            // Update scroll progress
+            const progress = (scrolled / maxScroll) * 100;
+            scrollProgress.style.width = progress + '%';
+            
+            scrollTicking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!scrollTicking) {
+                requestAnimationFrame(updateOnScroll);
+                scrollTicking = true;
             }
         });
 
-        // Animate elements on scroll
+        // Typing animation
+        const typingText = document.querySelector('.typing-text');
+        const words = ['Jiao', 'Engineer', 'Developer'];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function typeAnimation() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                typingText.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingText.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentWord.length) {
+                setTimeout(() => isDeleting = true, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+            }
+
+            setTimeout(typeAnimation, isDeleting ? 50 : 150);
+        }
+
+        setTimeout(typeAnimation, 1000);
+
+        // Particle system (reduced for performance)
+        function createParticles() {
+            const particlesContainer = document.querySelector('.particles');
+            if (!particlesContainer) return;
+            
+            const particleCount = 20; // Reduced from 50
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                
+                const colors = ['var(--accent-color)', 'var(--secondary-color)', 'var(--primary-color)'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // Intersection Observer for reveal animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -699,19 +1291,167 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.classList.add('active');
                 }
             });
         }, observerOptions);
 
-        // Observe project cards and skill categories
-        document.querySelectorAll('.project-card, .skill-category').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        // Observe all reveal elements
+        document.querySelectorAll('.reveal').forEach(el => {
             observer.observe(el);
         });
+
+        // Interactive floating cards
+        const floatingCards = document.querySelectorAll('.floating-card');
+        floatingCards.forEach(card => {
+            card.addEventListener('click', () => {
+                card.style.transform = 'scale(1.2) rotate(5deg)';
+                setTimeout(() => {
+                    card.style.transform = '';
+                }, 300);
+            });
+        });
+
+        // Project card interactions
+        const projectCards = document.querySelectorAll('.project-card');
+        projectCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                projectCards.forEach(otherCard => {
+                    if (otherCard !== card) {
+                        otherCard.style.opacity = '0.7';
+                        otherCard.style.transform = 'scale(0.95)';
+                    }
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                projectCards.forEach(otherCard => {
+                    otherCard.style.opacity = '1';
+                    otherCard.style.transform = 'scale(1)';
+                });
+            });
+        });
+
+        // Skill item click effects
+        const skillItems = document.querySelectorAll('.skill-item');
+        skillItems.forEach(item => {
+            item.addEventListener('click', () => {
+                item.style.transform = 'scale(1.2) rotate(5deg)';
+                item.style.background = 'var(--accent-color)';
+                setTimeout(() => {
+                    item.style.transform = '';
+                    item.style.background = '';
+                }, 500);
+            });
+        });
+
+        // Optimized parallax effect
+        let parallaxTicking = false;
+        
+        function updateParallax() {
+            const scrolled = window.pageYOffset;
+            const shapes = document.querySelectorAll('.floating-shape');
+            
+            shapes.forEach((shape, index) => {
+                const speed = 0.3 + (index * 0.05); // Reduced speed
+                shape.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+            
+            parallaxTicking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!parallaxTicking) {
+                requestAnimationFrame(updateParallax);
+                parallaxTicking = true;
+            }
+        });
+
+        // Add click ripple effect to interactive elements
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const circle = document.createElement('span');
+            const diameter = Math.max(button.clientWidth, button.clientHeight);
+            const radius = diameter / 2;
+
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
+            circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
+            circle.classList.add('ripple');
+
+            const ripple = button.getElementsByClassName('ripple')[0];
+            if (ripple) {
+                ripple.remove();
+            }
+
+            button.appendChild(circle);
+
+            setTimeout(() => {
+                circle.remove();
+            }, 600);
+        }
+
+        // Add ripple styles
+        const rippleStyle = document.createElement('style');
+        rippleStyle.textContent = `
+            .ripple {
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.3);
+                transform: scale(0);
+                animation: rippleEffect 0.6s linear;
+                pointer-events: none;
+            }
+
+            @keyframes rippleEffect {
+                to {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+
+            .project-card, .skill-item, .hero-tag, .contact-item {
+                position: relative;
+                overflow: hidden;
+            }
+        `;
+        document.head.appendChild(rippleStyle);
+
+        // Add ripple to interactive elements
+        document.querySelectorAll('.project-card, .skill-item, .hero-tag, .contact-item').forEach(el => {
+            el.addEventListener('click', createRipple);
+        });
+
+        // Performance optimization: Remove unused animation loops
+        // Removed the updateOnScroll function that was duplicated
+
+        // Easter egg: Konami code
+        let konamiCode = [];
+        const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.keyCode);
+            if (konamiCode.length > konamiSequence.length) {
+                konamiCode.shift();
+            }
+            
+            if (konamiCode.join(',') === konamiSequence.join(',')) {
+                document.body.style.animation = 'rainbow 2s infinite';
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                }, 5000);
+            }
+        });
+
+        // Add rainbow animation for easter egg
+        const easterEggStyle = document.createElement('style');
+        easterEggStyle.textContent = `
+            @keyframes rainbow {
+                0% { filter: hue-rotate(0deg); }
+                100% { filter: hue-rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(easterEggStyle);
     </script>
 </body>
 </html>
