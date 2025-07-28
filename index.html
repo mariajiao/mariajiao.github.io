@@ -34,36 +34,7 @@
             overflow-x: hidden;
         }
 
-        /* Custom Cursor - Only show on desktop, simplified */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--secondary-color);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.2s ease;
-            mix-blend-mode: difference;
-            display: none;
-        }
-
-        /* Show custom cursor only on devices that support hover (desktop) */
-        @media (hover: hover) and (pointer: fine) {
-            body {
-                cursor: none;
-            }
-            
-            .cursor {
-                display: block;
-            }
-        }
-
-        .cursor.hover {
-            transform: scale(1.5);
-            background: rgba(194, 132, 122, 0.2);
-        }
-
+        
         /* Animated Background */
         .animated-bg {
             position: fixed;
