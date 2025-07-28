@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maria Jiao - Engineering Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #280003;
+            --accent-color: #8FB8DE;
+            --secondary-color: #C2847A;
+            --cream: #FAF3DD;
+            --text-light: #666;
+            --text-lighter: #999;
+            --bg-light: #f5f0e8;
+            --border-light: #e8dcc0;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--primary-color);
+            background: var(--cream);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(250, 243, 221, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 400;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--bg-light) 100%);
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .profile-image {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 6px solid var(--accent-color);
+            box-shadow: 0 15px 40px rgba(143, 184, 222, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .hero-text .highlight {
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .hero-tag {
+            background: var(--white);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .hero-tag:hover {
+            background: var(--accent-color);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .hero-visual {
+            position: relative;
+            height: 400px;
+        }
+
+        .floating-card {
+            position: absolute;
+            background: var(--white);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .card-1 {
+            top: 20px;
+            right: 20px;
+            animation-delay: 0s;
+            background: linear-gradient(135deg, var(--accent-color), #a8c5e8);
+            color: var(--white);
+        }
+
+        .card-2 {
+            top: 150px;
+            left: 20px;
+            animation-delay: 2s;
+            background: linear-gradient(135deg, var(--secondary-color), #d49788);
+            color: var(--white);
+        }
+
+        .card-3 {
+            bottom: 50px;
+            right: 50px;
+            animation-delay: 4s;
+            background: linear-gradient(135deg, var(--primary-color), #4d0006);
+            color: var(--cream);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(-10px) rotate(-1deg); }
+        }
+
+        .card-tech {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .tech-icon {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+        }
+
+        /* Projects Section */
+        .projects {
+            padding: 6rem 0;
+            background: var(--cream);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 4rem;
+            color: var(--primary-color);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .project-role {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        .project-duration {
+            font-size: 0.8rem;
+            color: var(--text-lighter);
+            background: var(--bg-light);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        .project-description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tech-tag {
+            background: var(--accent-color);
+            color: var(--white);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            background: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        /* Skills Section */
+        .skills {
+            padding: 6rem 0;
+            background: var(--bg-light);
+        }
+
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .skill-category {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .skill-category h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-icon {
+            width: 12px;
+            height: 12px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .skill-item {
+            background: var(--bg-light);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background: var(--secondary-color);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 6rem 0;
+            background: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .contact p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            text-decoration: none;
+            color: var(--white);
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-item:hover {
+            opacity: 0.7;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo">Maria Jiao</a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="about">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Maria Jiao</h1>
+                    <p>Electrical & Computer Engineering student at Duke University, passionate about AI/ML, full-stack development, and innovative engineering solutions.</p>
+                </div>
+
+                <div class="profile-section">
+                    <div class="profile-image">
+                        Your Profile Picture Here
+                    </div>
+                    <div class="hero-stats">
+                        <span class="hero-tag">Duke University</span>
+                        <span class="hero-tag">Electrical & Computer Engineering</span>
+                        <span class="hero-tag">Computer Science</span>
+                        <span class="hero-tag">AI/ML Certificate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="projects" id="projects">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3 class="project-title">Philanthropy Intelligence Platform</h3>
+                            <p class="project-role">Software Engineer Intern</p>
+                        </div>
+                        <span class="project-duration">May 2025 - Present</span>
+                    </div>
+                    <p class="project-description">
+                        Developed a full-stack web platform for Duke's alumni office, featuring AI-powered donor matching using embedding-based fuzzy-matching algorithms. Automated processing of 300+ donor records with 80% reduction in manual research time.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Flask</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">MongoDB</span>
+                        <span class="tech-tag">Neo4j</span>
+                        <span class="tech-tag">OpenAI API</span>
+                        <span class="tech-tag">Selenium</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3 class="project-title">Duke Lightning Imager Platform</h3>
+                            <p class="project-role">Research Assistant</p>
+                        </div>
+                        <span class="project-duration">March 2025 - Present</span>
+                    </div>
+                    <p class="project-description">
+                        Built Python-based platform supporting automated testing and real-time spectrometer data visualization. Developed CLI/GUI monitoring tools and computational models using Ray Matrix Theory for optical system simulation.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Linux</span>
+                        <span class="tech-tag">Ray Matrix Theory</span>
+                        <span class="tech-tag">Data Visualization</span>
+                        <span class="tech-tag">Real-time Systems</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3 class="project-title">Automated Duke Flag Device</h3>
+                            <p class="project-role">Electrical Engineer</p>
+                        </div>
+                        <span class="project-duration">Sep 2024 - April 2025</span>
+                    </div>
+                    <p class="project-description">
+                        Created WiFi-enabled IoT flag control system using ESP32 with MQTT protocol. Designed weatherproof electromechanical assembly reducing manual operation by 75%. Won People's Choice Award at Pratt Engineering Design Expo.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">ESP32</span>
+                        <span class="tech-tag">IoT</span>
+                        <span class="tech-tag">MQTT</span>
+                        <span class="tech-tag">WiFi</span>
+                        <span class="tech-tag">Mechanical Design</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3 class="project-title">Simply Sorted Mobile App</h3>
+                            <p class="project-role">Software Developer</p>
+                        </div>
+                        <span class="project-duration">May 2023 - Feb 2024</span>
+                    </div>
+                    <p class="project-description">
+                        Developed iOS mobile app available on Apple Store promoting organized wardrobes and sustainable fashion. Integrated Google Cloud Firestore with Swift and implemented Firebase Authentication for secure user management.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Swift</span>
+                        <span class="tech-tag">iOS</span>
+                        <span class="tech-tag">Firebase</span>
+                        <span class="tech-tag">Google Cloud</span>
+                        <span class="tech-tag">Mobile Development</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="skills" id="skills">
+        <div class="container">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h3><div class="category-icon"></div>Programming Languages</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Python</span>
+                        <span class="skill-item">Java</span>
+                        <span class="skill-item">Swift</span>
+                        <span class="skill-item">C++</span>
+                        <span class="skill-item">MATLAB</span>
+                        <span class="skill-item">Arduino</span>
+                        <span class="skill-item">HTML/CSS</span>
+                        <span class="skill-item">JavaScript</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3><div class="category-icon"></div>Development Tools</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Git</span>
+                        <span class="skill-item">IntelliJ IDEA</span>
+                        <span class="skill-item">VS Code</span>
+                        <span class="skill-item">Jupyter Notebook</span>
+                        <span class="skill-item">Firebase</span>
+                        <span class="skill-item">Google Cloud</span>
+                        <span class="skill-item">MongoDB</span>
+                        <span class="skill-item">Neo4j</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3><div class="category-icon"></div>Engineering & Design</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Altium Designer</span>
+                        <span class="skill-item">LT Spice</span>
+                        <span class="skill-item">AutoCAD</span>
+                        <span class="skill-item">Autodesk Fusion</span>
+                        <span class="skill-item">ESP32</span>
+                        <span class="skill-item">IoT Systems</span>
+                        <span class="skill-item">PCB Design</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3><div class="category-icon"></div>Creative & Communication</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Figma</span>
+                        <span class="skill-item">Adobe Illustrator</span>
+                        <span class="skill-item">Canva</span>
+                        <span class="skill-item">Technical Writing</span>
+                        <span class="skill-item">Creative Writing</span>
+                        <span class="skill-item">Portrait Art</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2>Let's Connect</h2>
+            <p>Interested in collaborating or learning more about my work? I'd love to hear from you.</p>
+            <div class="contact-info">
+                <a href="mailto:maria.jiao@duke.edu" class="contact-item">maria.jiao@duke.edu</a>
+                <a href="https://www.linkedin.com/in/maria-jiao/" class="contact-item">LinkedIn</a>
+                <a href="tel:1-631-327-5176" class="contact-item">(631) 327-5176</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(250, 243, 221, 0.98)';
+            } else {
+                header.style.background = 'rgba(250, 243, 221, 0.95)';
+            }
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe project cards and skill categories
+        document.querySelectorAll('.project-card, .skill-category').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
