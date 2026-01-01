@@ -138,16 +138,16 @@
             position: relative;
             padding: 0.5rem 1rem;
             display: inline-block;
-            cursor: pointer;
+            cursor: default;
             background: none;
             border: none;
             font-family: inherit;
             font-size: inherit;
+            pointer-events: auto;
         }
 
         .nav-links a:hover, .nav-links .tab-button:hover {
             color: var(--secondary-color);
-            transform: translateY(-2px);
         }
 
         .nav-links a::after, .nav-links .tab-button::after {
@@ -165,17 +165,15 @@
             width: 100%;
         }
 
-        .nav-links .tab-button.active {
-            color: var(--secondary-color);
-        }
-
-        .nav-links .tab-button.active::after {
-            width: 100%;
-        }
-
-        /* Dropdown styles */
+        /* Dropdown styles - hover only */
         .dropdown {
             position: relative;
+        }
+
+        .nav-item:hover .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .dropdown-content {
@@ -184,7 +182,7 @@
             top: 100%;
             left: 0;
             background: var(--white);
-            min-width: 200px;
+            min-width: 220px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             border-radius: 10px;
             padding: 0.5rem 0;
@@ -193,12 +191,6 @@
             opacity: 0;
             transform: translateY(-10px);
             transition: all 0.3s ease;
-        }
-
-        .dropdown.active .dropdown-content {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
         }
 
         .dropdown-item {
@@ -223,7 +215,7 @@
             font-size: 0.8rem;
         }
 
-        .dropdown.active .dropdown-arrow {
+        .nav-item:hover .dropdown-arrow {
             transform: rotate(180deg);
         }
 
@@ -256,7 +248,14 @@
         }
 
         @media (max-width: 768px) {
-            .dropdown-content {
+            .nav-item:hover .dropdown-content {
+                display: none;
+            }
+
+            .dropdown.active .dropdown-content {
+                display: block;
+                opacity: 1;
+                transform: translateY(0);
                 position: static;
                 box-shadow: none;
                 background: transparent;
@@ -266,6 +265,10 @@
 
             .dropdown-item {
                 padding: 0.5rem 0;
+            }
+
+            .tab-button {
+                cursor: pointer;
             }
         }
 
@@ -1013,46 +1016,45 @@
             <a href="#" class="logo" id="logo-link">Maria Jiao</a>
             <ul class="nav-links">
                 <li class="nav-item">
-                    <button class="tab-button active" data-tab="homepage">Homepage</button>
+                    <span class="tab-button">Homepage<span class="dropdown-arrow">▼</span></span>
                     <div class="dropdown">
                         <div class="dropdown-content">
-                            <a href="#" class="dropdown-item" data-project="overview">Overview</a>
-                            <a href="#" class="dropdown-item" data-project="background">Background</a>
+                            <a href="index.html" class="dropdown-item">Overview</a>
+                            <a href="index.html#about" class="dropdown-item">Background</a>
                         </div>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <button class="tab-button" data-tab="experience">Experience<span class="dropdown-arrow">▼</span></button>
+                    <span class="tab-button">Experience<span class="dropdown-arrow">▼</span></span>
                     <div class="dropdown">
                         <div class="dropdown-content">
-                            <a href="#" class="dropdown-item" data-project="duke-ev">Duke Electric Vehicles</a>
-                            <a href="#" class="dropdown-item" data-project="philanthropy">Philanthropy Intelligence</a>
-                            <a href="#" class="dropdown-item" data-project="lightning">Lightning Imager</a>
+                            <a href="duke-ev.html" class="dropdown-item">Duke Electric Vehicles</a>
+                            <a href="philanthropy.html" class="dropdown-item">Philanthropy Intelligence</a>
+                            <a href="lightning.html" class="dropdown-item">Duke Lightning Imager Research</a>
                         </div>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <button class="tab-button" data-tab="projects">Projects<span class="dropdown-arrow">▼</span></button>
+                    <span class="tab-button">Projects<span class="dropdown-arrow">▼</span></span>
                     <div class="dropdown">
                         <div class="dropdown-content">
-                            <a href="#" class="dropdown-item" data-project="engineering">Engineering Projects</a>
-                            <a href="#" class="dropdown-item" data-project="software">Software Projects</a>
-                            <a href="#" class="dropdown-item" data-project="iot">IoT Projects</a>
+                            <a href="cpu.html" class="dropdown-item">Central Processing Unit</a>
+                            <a href="duke-flags.html" class="dropdown-item">Automated Duke Flags</a>
+                            <a href="simply-sorted.html" class="dropdown-item">Simply Sorted Mobile App</a>
                         </div>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <button class="tab-button" data-tab="skills">Skills<span class="dropdown-arrow">▼</span></button>
+                    <span class="tab-button">Skills<span class="dropdown-arrow">▼</span></span>
                     <div class="dropdown">
                         <div class="dropdown-content">
-                            <a href="#" class="dropdown-item" data-project="programming">Programming Languages</a>
-                            <a href="#" class="dropdown-item" data-project="tools">Development Tools</a>
-                            <a href="#" class="dropdown-item" data-project="engineering-skills">Engineering & Design</a>
-                            <a href="#" class="dropdown-item" data-project="creative">Creative Skills</a>
+                            <a href="index.html#skills" class="dropdown-item" data-skill="programming">Programming Languages</a>
+                            <a href="index.html#skills" class="dropdown-item" data-skill="tools">Development Tools</a>
+                            <a href="index.html#skills" class="dropdown-item" data-skill="engineering-skills">Engineering & Design</a>
+                            <a href="index.html#skills" class="dropdown-item" data-skill="creative">Creative Skills</a>
                         </div>
                     </div>
                 </li>
-                <li><a href="#contact">Contact</a></li>
             </ul>
             <div class="mobile-menu-btn">
                 <span></span>
@@ -1062,118 +1064,90 @@
         </nav>
     </header>
 
-    <!-- Homepage Tab Content -->
-    <div id="homepage" class="tab-content active">
-        <section class="hero" id="about">
-            <div class="particles"></div>
-            <div class="container">
-                <div class="hero-content">
-                    <div class="hero-text">
-                        <h1>Maria <span class="typing-container"><span class="typing-text">Jiao</span></span></h1>
-                        <p>Electrical & Computer Engineering student at Duke University, passionate about AI/ML, full-stack development, and innovative engineering solutions.</p>
-                    </div>
+    <!-- Homepage Content -->
+    <section class="hero" id="about">
+        <div class="particles"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Maria <span class="typing-container"><span class="typing-text">Jiao</span></span></h1>
+                    <p>B.S. in Electrical and Computer Engineering, Computer Science | Certificate in AI/ML at Duke University. Passionate about embedded systems, full-stack development, and innovative engineering solutions.</p>
+                </div>
 
-                    <div class="profile-section">
-                        <div class="profile-image">
-                            <img src="image/me.JPG" alt="Maria Jiao" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-                        </div>
-                        <div class="hero-stats">
-                            <span class="hero-tag">Electrical & Computer Engineering</span>
-                            <span class="hero-tag">Computer Science</span>
-                            <span class="hero-tag">AI/ML Certificate</span>
-                        </div>
+                <div class="profile-section">
+                    <div class="profile-image">
+                        <img src="image/me.JPG" alt="Maria Jiao" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                    </div>
+                    <div class="hero-stats">
+                        <span class="hero-tag">Electrical & Computer Engineering</span>
+                        <span class="hero-tag">Computer Science</span>
+                        <span class="hero-tag">AI/ML Certificate</span>
+                        <span class="hero-tag">Duke University</span>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
-    <!-- Experience Tab Content -->
-    <div id="experience" class="tab-content">
-        <section class="experience">
-            <div class="container">
-                <h2 class="section-title reveal">Professional Experience</h2>
-                <div class="projects-grid" id="experience-projects">
-                    <!-- Projects will be dynamically loaded here -->
+    <!-- Skills Section -->
+    <section class="skills" id="skills">
+        <div class="container">
+            <h2 class="section-title reveal">Technical Skills</h2>
+            <div class="skills-container">
+                <div class="skill-category reveal" data-category="programming">
+                    <h3><div class="category-icon"></div>Programming Languages</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Java</span>
+                        <span class="skill-item">Python</span>
+                        <span class="skill-item">C/C++</span>
+                        <span class="skill-item">MATLAB</span>
+                        <span class="skill-item">MIPS Assembly</span>
+                        <span class="skill-item">Swift</span>
+                        <span class="skill-item">HTML/CSS</span>
+                        <span class="skill-item">JavaScript</span>
+                    </div>
                 </div>
-            </div>
-        </section>
-    </div>
 
-    <!-- Projects Tab Content -->
-    <div id="projects" class="tab-content">
-        <section class="projects">
-            <div class="container">
-                <h2 class="section-title reveal">Featured Projects</h2>
-                <div class="projects-grid" id="projects-grid">
-                    <!-- Projects will be dynamically loaded here -->
+                <div class="skill-category reveal" data-category="tools">
+                    <h3><div class="category-icon"></div>Tools & Frameworks</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Git</span>
+                        <span class="skill-item">Flask</span>
+                        <span class="skill-item">Docker</span>
+                        <span class="skill-item">Firebase</span>
+                        <span class="skill-item">Agile (Jira, Trello)</span>
+                        <span class="skill-item">Jupyter Notebook</span>
+                        <span class="skill-item">VS Code</span>
+                        <span class="skill-item">IntelliJ</span>
+                        <span class="skill-item">Figma</span>
+                    </div>
                 </div>
-            </div>
-        </section>
-    </div>
 
-    <!-- Skills Tab Content -->
-    <div id="skills" class="tab-content">
-        <section class="skills">
-            <div class="container">
-                <h2 class="section-title reveal">Technical Skills</h2>
-                <div class="skills-container" id="skills-content">
-                    <div class="skill-category reveal" data-category="programming">
-                        <h3><div class="category-icon"></div>Programming Languages</h3>
-                        <div class="skill-list">
-                            <span class="skill-item">Python</span>
-                            <span class="skill-item">Java</span>
-                            <span class="skill-item">Swift</span>
-                            <span class="skill-item">C++</span>
-                            <span class="skill-item">MATLAB</span>
-                            <span class="skill-item">Arduino</span>
-                            <span class="skill-item">HTML/CSS</span>
-                            <span class="skill-item">JavaScript</span>
-                        </div>
+                <div class="skill-category reveal" data-category="engineering-skills">
+                    <h3><div class="category-icon"></div>Hardware & Systems</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Linux/Unix</span>
+                        <span class="skill-item">Altium Designer</span>
+                        <span class="skill-item">ESP32</span>
+                        <span class="skill-item">Arduino</span>
+                        <span class="skill-item">LTSpice</span>
+                        <span class="skill-item">Autodesk Fusion</span>
+                        <span class="skill-item">AutoCAD</span>
+                        <span class="skill-item">PCB Design</span>
                     </div>
+                </div>
 
-                    <div class="skill-category reveal" data-category="tools">
-                        <h3><div class="category-icon"></div>Development Tools</h3>
-                        <div class="skill-list">
-                            <span class="skill-item">Git</span>
-                            <span class="skill-item">IntelliJ IDEA</span>
-                            <span class="skill-item">VS Code</span>
-                            <span class="skill-item">Jupyter Notebook</span>
-                            <span class="skill-item">Firebase</span>
-                            <span class="skill-item">Google Cloud</span>
-                            <span class="skill-item">MongoDB</span>
-                            <span class="skill-item">Neo4j</span>
-                        </div>
-                    </div>
-
-                    <div class="skill-category reveal" data-category="engineering-skills">
-                        <h3><div class="category-icon"></div>Engineering & Design</h3>
-                        <div class="skill-list">
-                            <span class="skill-item">Altium Designer</span>
-                            <span class="skill-item">LT Spice</span>
-                            <span class="skill-item">AutoCAD</span>
-                            <span class="skill-item">Autodesk Fusion</span>
-                            <span class="skill-item">ESP32</span>
-                            <span class="skill-item">IoT Systems</span>
-                            <span class="skill-item">PCB Design</span>
-                        </div>
-                    </div>
-
-                    <div class="skill-category reveal" data-category="creative">
-                        <h3><div class="category-icon"></div>Creative & Communication</h3>
-                        <div class="skill-list">
-                            <span class="skill-item">Figma</span>
-                            <span class="skill-item">Adobe Illustrator</span>
-                            <span class="skill-item">Canva</span>
-                            <span class="skill-item">Technical Writing</span>
-                            <span class="skill-item">Creative Writing</span>
-                            <span class="skill-item">Portrait Art</span>
-                        </div>
+                <div class="skill-category reveal" data-category="databases">
+                    <h3><div class="category-icon"></div>Databases</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">MongoDB</span>
+                        <span class="skill-item">Google Cloud Firestore</span>
+                        <span class="skill-item">Neo4j</span>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
     <section class="contact" id="contact">
         <div class="container">
@@ -1188,273 +1162,19 @@
     </section>
 
     <script>
-        // Projects data organized by category
-        const projectsData = {
-            'duke-ev': {
-                title: 'Duke Electric Vehicles',
-                role: 'Communication Protocol Technical Lead (Electrical Team) | VP of Recruiting',
-                duration: 'Sep 2024 - Present',
-                description: 'Design and implement custom CAN bus module and supporting comms PCB to manage robust serial communication between distributed microcontrollers across vehicle, interfacing with sensors and subsystems for real-time telemetry and data analytics. Researched and selected low-power, efficient components to reduce energy consumption in peripheral systems.',
-                tech: ['CAN Bus', 'PCB Design', 'Microcontrollers', 'Real-time Systems', 'Low-power Design', 'Shell Eco-marathon'],
-                category: 'engineering'
-            },
-            'philanthropy': {
-                title: 'Philanthropy Intelligence Platform',
-                role: 'Software Engineer Intern',
-                duration: 'May 2025 - Present',
-                description: 'Developed a full-stack web platform for Duke\'s alumni office, featuring AI-powered donor matching using embedding-based fuzzy-matching algorithms. Automated processing of 300+ donor records with 80% reduction in manual research time.',
-                tech: ['Flask', 'JavaScript', 'MongoDB', 'Neo4j', 'OpenAI API', 'Selenium'],
-                category: 'software'
-            },
-            'lightning': {
-                title: 'Duke Lightning Imager Platform',
-                role: 'Research Assistant',
-                duration: 'March 2025 - Present',
-                description: 'Built Python-based platform supporting automated testing and real-time spectrometer data visualization. Developed CLI/GUI monitoring tools and computational models using Ray Matrix Theory for optical system simulation.',
-                tech: ['Python', 'Linux', 'Ray Matrix Theory', 'Data Visualization', 'Real-time Systems'],
-                category: 'engineering'
-            },
-            'flag': {
-                title: 'Automated Duke Flag Device',
-                role: 'Electrical Engineer',
-                duration: 'Sep 2024 - April 2025',
-                description: 'Created WiFi-enabled IoT flag control system using ESP32 with MQTT protocol. Designed weatherproof electromechanical assembly reducing manual operation by 75%. Won People\'s Choice Award at Pratt Engineering Design Expo.',
-                tech: ['ESP32', 'IoT', 'MQTT', 'WiFi', 'Mechanical Design'],
-                category: 'iot'
-            },
-            'simply-sorted': {
-                title: 'Simply Sorted Mobile App',
-                role: 'Software Developer',
-                duration: 'May 2023 - Feb 2024',
-                description: 'Developed iOS mobile app available on Apple Store promoting organized wardrobes and sustainable fashion. Integrated Google Cloud Firestore with Swift and implemented Firebase Authentication for secure user management.',
-                tech: ['Swift', 'iOS', 'Firebase', 'Google Cloud', 'Mobile Development'],
-                category: 'software'
-            }
-        };
-
-        // Category mappings
-        const categoryProjects = {
-            'engineering': ['duke-ev', 'lightning'],
-            'software': ['philanthropy', 'simply-sorted'],
-            'iot': ['flag'],
-            'experience': ['duke-ev', 'philanthropy', 'lightning']
-        };
-
-        // Tab switching functionality
-        const tabButtons = document.querySelectorAll('.tab-button');
-        const tabContents = document.querySelectorAll('.tab-content');
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                const targetTab = button.getAttribute('data-tab');
-                const navItem = button.closest('.nav-item');
-                const dropdown = navItem ? navItem.querySelector('.dropdown') : null;
-                
-                // If clicking a button that has a dropdown, don't close it yet
-                // (dropdown toggle is handled separately)
-                if (!dropdown || !dropdown.contains(e.target)) {
-                    // Remove active class from all tabs and buttons
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    tabContents.forEach(content => content.classList.remove('active'));
-                    
-                    // Add active class to clicked tab and corresponding content
-                    button.classList.add('active');
-                    const tabContent = document.getElementById(targetTab);
-                    if (tabContent) {
-                        tabContent.classList.add('active');
-                    }
-                    
-                    // Close all dropdowns if not clicking on dropdown
-                    if (!dropdown || !e.target.closest('.dropdown')) {
-                        document.querySelectorAll('.dropdown').forEach(d => {
-                            d.classList.remove('active');
-                        });
-                    }
-
-                    // Load default content for the tab
-                    if (targetTab === 'projects') {
-                        loadProjects('engineering');
-                    } else if (targetTab === 'experience') {
-                        loadExperience();
-                    }
+        // Handle skill category navigation from dropdown
+        document.querySelectorAll('[data-skill]').forEach(item => {
+            item.addEventListener('click', (e) => {
+                if (item.href.includes('#skills')) {
+                    e.preventDefault();
+                    const skillCategory = item.getAttribute('data-skill');
+                    window.location.href = 'index.html#skills';
+                    setTimeout(() => {
+                        highlightSkillCategory(skillCategory);
+                    }, 500);
                 }
             });
         });
-
-        // Dropdown functionality
-        document.querySelectorAll('.nav-item').forEach(item => {
-            const button = item.querySelector('.tab-button');
-            const dropdown = item.querySelector('.dropdown');
-            
-            if (dropdown) {
-                button.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const isActive = dropdown.classList.contains('active');
-                    
-                    // Close all other dropdowns
-                    document.querySelectorAll('.dropdown').forEach(d => {
-                        if (d !== dropdown) d.classList.remove('active');
-                    });
-                    
-                    // Toggle current dropdown
-                    dropdown.classList.toggle('active');
-                    
-                    // If clicking the tab button, also switch tabs
-                    const targetTab = button.getAttribute('data-tab');
-                    if (targetTab && !isActive) {
-                        tabButtons.forEach(btn => btn.classList.remove('active'));
-                        tabContents.forEach(content => content.classList.remove('active'));
-                        button.classList.add('active');
-                        const tabContent = document.getElementById(targetTab);
-                        if (tabContent) {
-                            tabContent.classList.add('active');
-                        }
-                    }
-                });
-
-                // Handle dropdown item clicks
-                dropdown.querySelectorAll('.dropdown-item').forEach(item => {
-                    item.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const projectId = item.getAttribute('data-project');
-                        handleProjectSelection(projectId);
-                    });
-                });
-            }
-        });
-
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.nav-item')) {
-                document.querySelectorAll('.dropdown').forEach(dropdown => {
-                    dropdown.classList.remove('active');
-                });
-            }
-        });
-
-        // Handle project selection from dropdowns
-        function handleProjectSelection(projectId) {
-            // Close dropdowns
-            document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
-
-            // Switch to appropriate tab and filter content
-            if (categoryProjects.experience.includes(projectId)) {
-                switchTab('experience');
-                loadExperience();
-                setTimeout(() => {
-                    scrollToProject(projectId);
-                }, 100);
-            } else if (categoryProjects.engineering.includes(projectId)) {
-                switchTab('projects');
-                loadProjects('engineering');
-                setTimeout(() => {
-                    scrollToProject(projectId);
-                }, 100);
-            } else if (categoryProjects.software.includes(projectId)) {
-                switchTab('projects');
-                loadProjects('software');
-                setTimeout(() => {
-                    scrollToProject(projectId);
-                }, 100);
-            } else if (categoryProjects.iot.includes(projectId)) {
-                switchTab('projects');
-                loadProjects('iot');
-                setTimeout(() => {
-                    scrollToProject(projectId);
-                }, 100);
-            } else if (projectId === 'programming' || projectId === 'tools' || projectId === 'engineering-skills' || projectId === 'creative') {
-                switchTab('skills');
-                highlightSkillCategory(projectId);
-            }
-        }
-
-        function switchTab(tabName) {
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
-            
-            const button = document.querySelector(`[data-tab="${tabName}"]`);
-            const content = document.getElementById(tabName);
-            
-            if (button) button.classList.add('active');
-            if (content) content.classList.add('active');
-        }
-
-        function loadProjects(category) {
-            const container = document.getElementById('projects-grid');
-            if (!container) return;
-
-            const projectIds = categoryProjects[category] || [];
-            container.innerHTML = '';
-
-            projectIds.forEach(projectId => {
-                const project = projectsData[projectId];
-                if (project) {
-                    container.appendChild(createProjectCard(project, projectId));
-                }
-            });
-
-            // Trigger reveal animations
-            setTimeout(() => {
-                container.querySelectorAll('.project-card').forEach(card => {
-                    card.classList.add('reveal', 'active');
-                });
-            }, 50);
-        }
-
-        function loadExperience() {
-            const container = document.getElementById('experience-projects');
-            if (!container) return;
-
-            const experienceIds = categoryProjects.experience || [];
-            container.innerHTML = '';
-
-            experienceIds.forEach(projectId => {
-                const project = projectsData[projectId];
-                if (project) {
-                    container.appendChild(createProjectCard(project, projectId));
-                }
-            });
-
-            // Trigger reveal animations
-            setTimeout(() => {
-                container.querySelectorAll('.project-card').forEach(card => {
-                    card.classList.add('reveal', 'active');
-                });
-            }, 50);
-        }
-
-        function createProjectCard(project, projectId) {
-            const card = document.createElement('div');
-            card.className = 'project-card reveal';
-            card.id = `project-${projectId}`;
-            card.innerHTML = `
-                <div class="project-header">
-                    <div>
-                        <h3 class="project-title">${project.title}</h3>
-                        <p class="project-role">${project.role}</p>
-                    </div>
-                    <span class="project-duration">${project.duration}</span>
-                </div>
-                <div class="project-info">
-                    <p class="project-description">${project.description}</p>
-                    <div class="tech-stack">
-                        ${project.tech.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
-                    </div>
-                </div>
-            `;
-            return card;
-        }
-
-        function scrollToProject(projectId) {
-            const element = document.getElementById(`project-${projectId}`);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                element.style.animation = 'pulse 0.5s ease';
-                setTimeout(() => {
-                    element.style.animation = '';
-                }, 500);
-            }
-        }
 
         function highlightSkillCategory(categoryId) {
             const categoryMap = {
@@ -1473,9 +1193,6 @@
                 }, 500);
             }
         }
-
-        // Initialize - load engineering projects by default when projects tab is opened
-        // Homepage is active by default, so no need to load projects yet
 
         // Custom Cursor (optimized)
         const cursor = document.querySelector('.cursor');
@@ -1534,25 +1251,34 @@
             });
         }
 
-        // Logo link - switch to homepage
+        // Mobile dropdown toggle
+        if (window.innerWidth <= 768) {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 768) {
+                        const navItem = button.closest('.nav-item');
+                        const dropdown = navItem ? navItem.querySelector('.dropdown') : null;
+                        if (dropdown) {
+                            e.stopPropagation();
+                            dropdown.classList.toggle('active');
+                            // Close other dropdowns
+                            document.querySelectorAll('.dropdown').forEach(d => {
+                                if (d !== dropdown) d.classList.remove('active');
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+        // Logo link - scroll to top
         const logoLink = document.getElementById('logo-link');
         if (logoLink) {
             logoLink.addEventListener('click', (e) => {
                 e.preventDefault();
-                switchTab('homepage');
-            });
-        }
-
-        // Homepage dropdown items
-        document.querySelectorAll('[data-project="overview"], [data-project="background"]').forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                switchTab('homepage');
-                document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
-                // Scroll to top or specific section
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
-        });
+        }
 
         // Optimized scroll effects
         let scrollTicking = false;
