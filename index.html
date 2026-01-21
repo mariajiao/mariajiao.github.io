@@ -165,12 +165,13 @@
             width: 100%;
         }
 
-        /* Dropdown styles - hover only */
+        /* Dropdown styles - hover only with delay */
         .dropdown {
             position: relative;
         }
 
-        .nav-item:hover .dropdown-content {
+        .nav-item:hover .dropdown-content,
+        .dropdown-content.visible {
             display: block;
             opacity: 1;
             transform: translateY(0);
@@ -190,7 +191,8 @@
             z-index: 1000;
             opacity: 0;
             transform: translateY(-10px);
-            transition: all 0.3s ease;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            pointer-events: auto;
         }
 
         .dropdown-item {
@@ -1044,17 +1046,6 @@
                         </div>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <span class="tab-button">Skills<span class="dropdown-arrow">▼</span></span>
-                    <div class="dropdown">
-                        <div class="dropdown-content">
-                            <a href="index.html#skills" class="dropdown-item" data-skill="programming">Programming Languages</a>
-                            <a href="index.html#skills" class="dropdown-item" data-skill="tools">Development Tools</a>
-                            <a href="index.html#skills" class="dropdown-item" data-skill="engineering-skills">Engineering & Design</a>
-                            <a href="index.html#skills" class="dropdown-item" data-skill="creative">Creative Skills</a>
-                        </div>
-                    </div>
-                </li>
             </ul>
             <div class="mobile-menu-btn">
                 <span></span>
@@ -1250,6 +1241,42 @@
                 navLinks.classList.toggle('active');
             });
         }
+
+        // Dropdown hover with delay to keep it open longer
+        let dropdownTimeout = {};
+        document.querySelectorAll('.nav-item').forEach(navItem => {
+            const dropdown = navItem.querySelector('.dropdown-content');
+            if (dropdown) {
+                navItem.addEventListener('mouseenter', () => {
+                    // Clear any existing timeout
+                    if (dropdownTimeout[navItem]) {
+                        clearTimeout(dropdownTimeout[navItem]);
+                    }
+                    // Show dropdown immediately
+                    dropdown.classList.add('visible');
+                });
+
+                navItem.addEventListener('mouseleave', () => {
+                    // Set timeout to hide dropdown after 300ms delay
+                    dropdownTimeout[navItem] = setTimeout(() => {
+                        dropdown.classList.remove('visible');
+                    }, 300);
+                });
+
+                // Keep dropdown open when hovering over it
+                dropdown.addEventListener('mouseenter', () => {
+                    if (dropdownTimeout[navItem]) {
+                        clearTimeout(dropdownTimeout[navItem]);
+                    }
+                });
+
+                dropdown.addEventListener('mouseleave', () => {
+                    dropdownTimeout[navItem] = setTimeout(() => {
+                        dropdown.classList.remove('visible');
+                    }, 300);
+                });
+            }
+        });
 
         // Mobile dropdown toggle
         if (window.innerWidth <= 768) {

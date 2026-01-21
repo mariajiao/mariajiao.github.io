@@ -179,6 +179,70 @@
             font-weight: 500;
         }
 
+        .repo-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            padding: 0.75rem 1.5rem;
+            background: var(--accent-color);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(143, 184, 222, 0.3);
+        }
+
+        .repo-link:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(194, 132, 122, 0.4);
+        }
+
+        .repo-link::before {
+            content: '🔗';
+            font-size: 1.1rem;
+        }
+
+        .repo-links {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .project-image {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            margin: 2rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-lighter);
+            font-size: 1.1rem;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: 15px;
+        }
+
+        .project-image video {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
         @media (max-width: 768px) {
             .project-header h1 {
                 font-size: 2rem;
@@ -191,6 +255,11 @@
             .project-meta {
                 flex-direction: column;
                 gap: 1rem;
+            }
+
+            .project-image {
+                height: 250px;
+                margin: 1.5rem 0;
             }
         }
     </style>
@@ -227,6 +296,14 @@
                 </div>
             </div>
 
+            <div class="project-image">
+                <video controls>
+                    <source src="image/IMG_8505 (1).MOV" type="video/quicktime">
+                    <source src="image/IMG_8505 (1).MOV" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
             <div class="project-content">
                 <div class="section">
                     <h2>Overview</h2>
@@ -256,6 +333,18 @@
                         <span class="tech-tag">Data Visualization</span>
                         <span class="tech-tag">CI/CD</span>
                         <span class="tech-tag">Data Processing</span>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Repository Links</h2>
+                    <div class="repo-links">
+                        <a href="https://gitlab.oit.duke.edu/yj229/sig2mat" target="_blank" class="repo-link">
+                            Oscilloscope Parser (sig2mat)
+                        </a>
+                        <a href="https://gitlab.oit.duke.edu/yj229/research" target="_blank" class="repo-link">
+                            Spectrometer Interface (research)
+                        </a>
                     </div>
                 </div>
             </div>
