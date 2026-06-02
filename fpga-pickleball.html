@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPGA Pickleball Launcher - Maria Jiao</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #280003;
+            --accent-color: #8FB8DE;
+            --secondary-color: #C2847A;
+            --cream: #FAF3DD;
+            --text-light: #666;
+            --text-lighter: #999;
+            --bg-light: #f5f0e8;
+            --border-light: #e8dcc0;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--primary-color);
+            background: var(--cream);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(250, 243, 221, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--secondary-color);
+        }
+
+        .project-detail {
+            padding-top: 120px;
+            padding-bottom: 4rem;
+            min-height: 100vh;
+        }
+
+        .project-header {
+            margin-bottom: 3rem;
+        }
+
+        .project-header h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .project-header .subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .meta-label {
+            font-size: 0.9rem;
+            color: var(--text-lighter);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .meta-value {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .project-content {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .section p {
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .section ul li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        .section ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .project-media {
+            margin: 2rem 0;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .media-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            background: var(--bg-light);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .media-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .media-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            background: #000;
+        }
+
+        .media-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(20, 0, 0, 0.72));
+            color: #fff;
+            padding: 1.5rem 1rem 0.75rem;
+            font-size: 0.78rem;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .media-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .media-item video {
+                height: 260px;
+            }
+        }
+
+        .tech-tag {
+            background: var(--accent-color);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .pipeline-diagram {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+
+        .pipeline-stage {
+            background: var(--bg-light);
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            padding: 0.75rem 1.25rem;
+            text-align: center;
+            flex: 1;
+            min-width: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .pipeline-stage:hover {
+            background: var(--accent-color);
+            color: var(--white);
+            border-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        .pipeline-stage .stage-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+        }
+
+        .pipeline-stage:hover .stage-name {
+            color: var(--white);
+        }
+
+        .pipeline-stage .stage-desc {
+            font-size: 0.72rem;
+            color: var(--text-lighter);
+            margin-top: 0.25rem;
+        }
+
+        .pipeline-stage:hover .stage-desc {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .pipeline-arrow {
+            color: var(--secondary-color);
+            font-size: 1.4rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .project-header h1 {
+                font-size: 2rem;
+            }
+
+            .project-content {
+                padding: 2rem;
+            }
+
+            .project-meta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .pipeline-diagram {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .pipeline-arrow {
+                transform: rotate(90deg);
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Maria Jiao</a>
+            <a href="index.html" class="back-link">← Back to Home</a>
+        </nav>
+    </header>
+
+    <main class="project-detail">
+        <div class="container">
+            <div class="project-header">
+                <h1>FPGA Pickleball Launcher</h1>
+                <p class="subtitle">MIPS-Controlled System</p>
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Type</span>
+                        <span class="meta-value">Computer Architecture Project</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Hardware</span>
+                        <span class="meta-value">Nexys A7 FPGA</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Languages</span>
+                        <span class="meta-value">Verilog, MIPS Assembly</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-media">
+                <div class="media-grid">
+                    <div class="media-item">
+                        <img src="image/fpga1.jpg" alt="FPGA Pickleball Launcher">
+                        <div class="media-caption">FPGA Pickleball Launcher on the Nexys A7</div>
+                    </div>
+                    <div class="media-item">
+                        <video controls playsinline>
+                            <source src="image/fpga2.mp4" type="video/mp4">
+                        </video>
+                        <div class="media-caption">Launcher in action</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-content">
+                <div class="section">
+                    <h2>Overview</h2>
+                    <p>Built a fully functional pickleball launcher controlled by a custom MIPS processor implemented entirely in hardware on a Nexys A7 FPGA. The system combines low-level digital design — a 5-stage pipelined processor written in Verilog — with embedded control firmware in MIPS assembly, driving real physical actuators for motor speed, rotation, and multiple firing modes.</p>
+                    <p>This project spanned the full hardware-software stack: from register-transfer-level processor design with hazard handling, all the way up to memory-mapped I/O and physical peripheral control.</p>
+                </div>
+
+                <div class="section">
+                    <h2>5-Stage Pipelined Processor</h2>
+                    <p>Designed and implemented a custom MIPS processor in Verilog, executing instructions across five pipeline stages with full hazard mitigation:</p>
+
+                    <div class="pipeline-diagram">
+                        <div class="pipeline-stage">
+                            <div class="stage-name">IF</div>
+                            <div class="stage-desc">Instruction Fetch</div>
+                        </div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-stage">
+                            <div class="stage-name">ID</div>
+                            <div class="stage-desc">Instruction Decode</div>
+                        </div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-stage">
+                            <div class="stage-name">EX</div>
+                            <div class="stage-desc">Execute</div>
+                        </div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-stage">
+                            <div class="stage-name">MEM</div>
+                            <div class="stage-desc">Memory Access</div>
+                        </div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-stage">
+                            <div class="stage-name">WB</div>
+                            <div class="stage-desc">Write Back</div>
+                        </div>
+                    </div>
+
+                    <ul>
+                        <li>Hazard detection unit identifies data and control hazards at runtime</li>
+                        <li>Data forwarding paths route results directly between pipeline stages, avoiding unnecessary stalls</li>
+                        <li>Stall logic inserts pipeline bubbles when forwarding cannot resolve a dependency</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h2>Memory-Mapped I/O & Peripherals</h2>
+                    <ul>
+                        <li>Designed a memory-mapped I/O subsystem that exposes physical peripherals as addressable memory locations, allowing MIPS assembly programs to control hardware through standard load/store instructions</li>
+                        <li>PWM peripheral drives DC motors at variable speeds, enabling precise control of launch velocity</li>
+                        <li>Stepper motor peripheral controls launcher rotation and ball feed direction</li>
+                        <li>Control logic written in MIPS assembly coordinates multiple peripherals simultaneously to enable distinct firing modes</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h2>Technologies Used</h2>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Verilog</span>
+                        <span class="tech-tag">MIPS Assembly</span>
+                        <span class="tech-tag">Nexys A7 FPGA</span>
+                        <span class="tech-tag">Vivado</span>
+                        <span class="tech-tag">Pipelined CPU Design</span>
+                        <span class="tech-tag">Hazard Detection</span>
+                        <span class="tech-tag">Data Forwarding</span>
+                        <span class="tech-tag">Memory-Mapped I/O</span>
+                        <span class="tech-tag">PWM</span>
+                        <span class="tech-tag">Stepper Motors</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
