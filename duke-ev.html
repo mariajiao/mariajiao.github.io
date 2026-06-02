@@ -281,6 +281,24 @@
             grid-row: 3;
         }
 
+        .repo-link {
+            display: inline-block;
+            margin-top: 1.25rem;
+            padding: 0.6rem 1.4rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 30px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .repo-link:hover {
+            background: var(--primary-color);
+            color: var(--cream);
+        }
+
         @media (max-width: 768px) {
             .project-header h1 {
                 font-size: 2rem;
@@ -338,6 +356,7 @@
                         <span class="meta-value">Durham, NC</span>
                     </div>
                 </div>
+                <a href="https://github.com/Duke-EV/DEV-2025-26-Firmware" class="repo-link" target="_blank" rel="noopener noreferrer">↗ View Firmware on GitHub</a>
             </div>
 
             <div class="project-gallery">
